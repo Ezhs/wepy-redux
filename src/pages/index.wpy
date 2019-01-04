@@ -20,6 +20,7 @@
     <view class="userinfo" @tap="handleViewTap">
       <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
       <view class="userinfo-nickname">{{ userInfo.nickName }}</view>
+      <view>{{ fnTes1t() }}</view>
     </view>
 
     <panel>
@@ -180,7 +181,9 @@
         return +new Date()
       }
     }
-
+    fnTest () {
+      console.log('fnTest')
+    }
     methods = {
       plus () {
         this.mynum++

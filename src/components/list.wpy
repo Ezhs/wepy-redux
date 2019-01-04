@@ -9,7 +9,7 @@
 <template>
   <view class="list">
   <view>
-    <button @tap="add" size="mini">添加列表</button>
+    <button @tap="add" size="mini">添加列表 {{ testFN }}</button>
   </view>
     <block wx:for-items="{{list}}" wx:for-index="index" wx:for-item="item" wx:key="id">
       <view @tap="tap" class="mylist">
@@ -39,6 +39,10 @@
     }
 
     methods = {
+      // testFN () {
+      //   console.log('testFn: 我执行了')
+      //   return '123'
+      // },
       tap () {
         // this.num = this.num + 1
         console.log(this.$name + ' tap')
