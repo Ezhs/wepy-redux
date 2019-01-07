@@ -59,7 +59,7 @@ export default class QueryHotel extends wepy.page {
           url: 'http://api01.idataapi.cn:8000/hotel/idataapi?apikey=HGA7pLQIyWdFPp7he0LQjGQXHwqCHsOFNqtWrSir5M9jcpWs6sVEExn4ytvKpRwF',
           data: data
         }).then(res => {
-          this.hotelList = res.data
+          this.hotelList = isScroll ? this.hotelList.concat(res.data) : res.data
           this.pageToken = res.pageToken
           this.$apply()
         }, () => {
@@ -72,6 +72,9 @@ export default class QueryHotel extends wepy.page {
     }
     onLoad () {
       this.methods.queryHotel.call(this)
+    }
+    onReachBottom () {
+      this.methods.queryHotel.call(this, true)
     }
   }
 </script>
