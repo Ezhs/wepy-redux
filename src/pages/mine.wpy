@@ -1,0 +1,18 @@
+<template>
+  <block>
+    mine
+  </block>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Mine extends wepy.page {
+    data = {
+      src: ''
+    }
+    onLoad (query) {
+      this.src = query.src
+    }
+  }
+</script>

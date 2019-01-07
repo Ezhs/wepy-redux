@@ -1,0 +1,16 @@
+<template>
+  <web-view src="{{ src }}"></web-view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class myWebView extends wepy.page {
+    data = {
+      src: ''
+    }
+    onLoad (query) {
+      this.src = query.src
+    }
+  }
+</script>

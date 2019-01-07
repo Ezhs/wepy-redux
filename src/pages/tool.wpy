@@ -1,0 +1,81 @@
+<template>
+  <view class="tool-wrap">
+    <view class="tool">
+      <button @tap="pushToQueryAscription" class="tool-item">号码归属地查询</button>
+      <button @tap="pushToQueryHotel" class="tool-item">附加酒店查询</button>
+    </view>
+
+    <button open-type="openSetting">授权</button>
+    <!--  查询号码归属地弹窗  -->
+    <view class="ascription-dialog" wx-if="{{ ascriptionDialog }}">
+      <input type="number" @input="phoneNumberChange" placeholder="请输入手机号码"/>
+      <button @tap="queryAscription">查询</button>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import {PAGES, navigateTo} from '@/utils'
+
+  import { connect } from 'wepy-redux'
+  import { SET_LOCATION_INFO } from '@/store/types/user'
+
+  @connect({
+  
+  }, {
+    setLocationInfo: SET_LOCATION_INFO
+  })
+
+  export default class Tool extends wepy.page {
+    config = {
+      navigationBarTitleText: 'tool'
+    }
+    data = {
+      src: '',
+      ascriptionDialog: false,
+      phoneNumber: ''
+    }
+    methods = {
+      pushToQueryAscription () {
+        navigateTo(PAGES.QUERY_ASCRIPTION)
+      },
+      pushToQueryHotel () {
+        // 位置授权 如果用户取消授权 那么 只能通过 按钮 调整到权限设置页 -
+        wepy.getLocation().then(res => {
+          // 将地理信息 存入 redux
+          this.methods.setLocationInfo(res)
+          navigateTo(PAGES.QUERY_Hotel)
+          // debugger
+        }, () => {
+          wepy.showToast({
+            title: '请点击下面的授权按钮 前往授权页面查看授权',
+            icon: 'none'
+          })
+        })
+      }
+    }
+    onLoad (query) {
+    }
+  }
+</script>
+
+
+<style scoped lang="less">
+.tool {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  .tool-item {
+    font-size: 28rpx;
+    width: 200rpx;
+    height: 100rpx;
+    line-height: 50rpx;
+    text-align: center;
+    border-radius: 10rxp;
+    border: 1rpx solid #000;
+    margin-bottom: 30rpx;
+  }
+}
+
+</style>

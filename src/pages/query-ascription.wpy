@@ -1,0 +1,78 @@
+<template>
+  <view class="query-ascription">
+    <input style="padding-left: 20rpx;" type="number" maxlength="11" @input="phoneNumberChange" placeholder="请输入手机号码"/>
+    <button @tap="queryAscription">查询</button>
+
+    <view class="record">
+      <repeat wx:for="{{ recordList }}" wx:key="{{ index }}">
+        <record :item.sync="item"></record>
+      </repeat>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import {request} from '@/network/service'
+  import record from '@/components/record'
+
+export default class QueryAscription extends wepy.page {
+    components = {
+      record
+    }
+    config = {
+      navigationBarTitleText: '号码归属地查询'
+    }
+    data = {
+      recordList: [
+        {
+          phoneNumber: '18211572781',
+          location: '广东 广州'
+        }
+      ],
+      phoneNumber: ''
+    }
+    methods = {
+      phoneNumberChange (e) {
+        this.phoneNumber = e.detail.value
+      },
+      queryAscription () {
+        // 校验手机号码
+        if (!/^1\d{10}$/.test(this.phoneNumber)) {
+          wepy.showToast({
+            title: '手机号码格式不正确',
+            icon: 'none'
+          })
+          return
+        }
+        request({
+          url: 'http://api02.idataapi.cn:8000/tools/phone_number_ascription',
+          data: {
+            phoneNumber: this.phoneNumber, // 关键字
+            apikey: 'HGA7pLQIyWdFPp7he0LQjGQXHwqCHsOFNqtWrSir5M9jcpWs6sVEExn4ytvKpRwF'
+          }
+        }).then(res => {
+          this.recordList.unshift({
+            location: res.data[0].location,
+            phoneNumber: this.phoneNumber
+          })
+          this.$apply()
+        }, () => {
+          wepy.showToast({
+            title: '手机号码格式不正确',
+            icon: 'none'
+          })
+        })
+      }
+    }
+  }
+</script>
+
+
+<style scoped lang="less">
+.query-ascription {
+  padding: 20rpx;
+  font-size: 28rpx;
+}
+
+</style>

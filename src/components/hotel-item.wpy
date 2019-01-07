@@ -1,0 +1,30 @@
+
+<template>
+  <view class="hotel-item">
+    {{ item.title + ' - ' + item.address + ' - ' + item.description }}
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class HotelItem extends wepy.component {
+    props = {
+      item: {
+        type: Object,
+        default: {}
+      }
+    }
+    computed = {
+  
+    }
+  }
+</script>
+
+<style scoped lang="less">
+@import './../styles/common.less';
+
+.hotel-item {
+  border-bottom: 1px solid @split_line;
+  line-height: 80rpx;
+}
+</style>

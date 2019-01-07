@@ -49,4 +49,4 @@ wepy build --watch | npm run dev // 启动项目
 - requestfix 解决了 小程序 请求并发最大上限 5 个的问题。 通过队列的方式 如果超过5个 添加到队列中在其他接口调用完成之后 在执行下一个 详情可以查看 wepy/lib/app.js 中的 RequestMQ 对象
 - promisify 使用wepy.xxx的方式请求小程序原生API都将Promise化.
 - 不能在页面中调用方法 {{ fn() }} // 方法不会执行 但是 如果使用 {{ fn() ? true : false }} 会返回false 
-- 
+- 组件的遍历-  使用 repeat 组件  遍历repeat 组件 嵌套自己的组件 https://tencent.github.io/wepy/document.html#/?id=%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98  官网 prop 属性是不支持的- 但是 测试 有效 其他属性是不支持的

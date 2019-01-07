@@ -1,6 +1,14 @@
 import wepy from 'wepy'
 let xhrToast = 0 // 定义正在请求的 请求个数
 export async function request (params) {
+  // 清除请求参数中的空值
+  if (params.data) {
+    for (let k in params.data) {
+      if (params.data[k] === '' || params.data[k] === null || params.data[k] === undefined) {
+        delete params.data[k]
+      }
+    }
+  }
   // header 在这里可以配置一些通用的参数
   const o = {
     url: params.url || '',
@@ -34,6 +42,13 @@ export async function request (params) {
     })
   }, err => {
     // 直接返回 让下面的then 方法处理
+    if (!params.noLoading) {
+      xhrToast++
+      wepy.showLoading({
+        title: '加载中',
+        icon: 'loading'
+      })
+    }
     return {
       code: 500,
       desc: JSON.stringify(err)
@@ -41,14 +56,14 @@ export async function request (params) {
   }).then(res => {
     return new Promise((resolve, reject) => {
       // 业务code
-      if (res.code === 200) {
+      if (res.data) {
         resolve(res)
       } else {
         // 处理异常弹窗
         if (!params.noToast) {
           wepy.showToast({
             icon: 'none',
-            title: res.desc
+            title: res.desc || '请求异常'
           })
         }
         reject(res)

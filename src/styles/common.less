@@ -1,0 +1,27 @@
+@white:#FFFFFF;
+@primary_red: #EC0B3B; //主色调,按钮和icon
+@navbar_red: #FF3B4B; // 顶部导航栏
+@primary_black: #333333; // 标题文字颜色，主要性文字
+@minor_black: #808080; // 次要性文字
+@border_black:#E5E5E5; // 边框颜色
+@tab_select_black: #858585;
+@tab_unselect_black: #D9D9D9;
+@split_line: #DDDDDD; // 分割线
+@background: #F8F8F8; // 背景底色
+
+// 清除button 的 边框
+button {
+  padding: 0 20rpx;
+  background-color: @white;
+  margin: 0;
+  &::after {
+    border: none;
+  }
+}
+
+input {
+  border: @border_black 1px solid;
+  border-radius: 10px;
+  height: 75rpx;
+  font-size: 30rpx;
+}

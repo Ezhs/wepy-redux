@@ -21,6 +21,9 @@
       <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
       <view class="userinfo-nickname">{{ userInfo.nickName }}</view>
       <view>{{ fnTes1t() }}</view>
+       <button @tap="sendRequest" size="mini">  toDetail  </button>
+
+       
     </view>
 
     <panel>
@@ -91,6 +94,7 @@
   import Group from '../components/group'
   import Toast from 'wepy-com-toast'
   import testMixin from '../mixins/test'
+  import {request} from '@/network/service'
 
   console.log('moduleA ignored: ', moduleA) // => moduleA ignored: {}
 
@@ -185,6 +189,20 @@
       console.log('fnTest')
     }
     methods = {
+  
+      sendRequest () {
+        // request({
+        //   // url: 'https://www.toutiao.com/search_content/?offset=0&format=json&keyword=%E7%99%BE%E5%BA%A6&autoload=true&count=20&cur_tab=1&from=search_tab&pd=synthesis'
+        //   url: 'https://www.toutiao.com/a6641841633216184840'
+        // }).then(res => {
+        //   console.log(res)
+        // }, err => {
+        //   console.log(err)
+        // })
+        wepy.navigateTo({
+          url: '/pages/my-web-view?src=https://m.toutiao.com/i6642574027309187592/'
+        })
+      },
       plus () {
         this.mynum++
       },

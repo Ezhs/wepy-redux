@@ -1,0 +1,33 @@
+
+<template>
+  <view class="record">
+    {{ item.phoneNumber + ' - ' + item.location }}
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Record extends wepy.component {
+    props = {
+      item: {
+        type: Object,
+        default: {}
+      }
+    }
+    computed = {
+      a () {
+        return this.item.phoneNumber + ' -1 ' + this.item.location
+      }
+    }
+  }
+</script>
+
+<style scoped lang="less">
+@import './../styles/common.less';
+
+.record {
+  border-bottom: 1px solid @split_line;
+  height: 80rpx;
+  line-height: 80rpx;
+}
+</style>

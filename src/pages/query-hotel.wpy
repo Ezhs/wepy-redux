@@ -1,0 +1,84 @@
+<template>
+  <view class="query-hotel">
+    <input 
+      style="padding-left: 20rpx;" 
+      @input="kwChange" 
+      placeholder="请输入位置"/>
+    <button @tap="queryHotel">查询</button>
+
+    <view class="hotel">
+      <repeat wx:for="{{ hotelList }}" wx:key="{{ index }}">
+        <hotelItem :item.sync="item" />
+      </repeat>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import {request} from '@/network/service'
+  import hotelItem from '@/components/hotel-item'
+  import { connect } from 'wepy-redux'
+
+  @connect({
+    locationInfo (state) {
+      return state.user.locationInfo
+    }
+  })
+
+export default class QueryHotel extends wepy.page {
+    components = {
+      hotelItem
+    }
+    config = {
+      navigationBarTitleText: '附近酒店查询'
+    }
+    data = {
+      hotelList: [],
+      pageToken: null,
+      kw: '' // 查询的关键字
+    }
+    methods = {
+      kwChange (e) {
+        this.kw = e.detail.value
+      },
+      queryHotel (isScroll) {
+        // 校验手机号码
+        let data = {
+          // 如果是下滑 传 pageToken 分页
+          pageToken: isScroll ? this.pageToken : ''
+        }
+        if (this.kw) {
+          data.address = this.kw
+        } else {
+          data.lon = this.locationInfo.longitude // 经
+          data.lat = this.locationInfo.latitude // 纬
+          data.distance = '5km' // 距离
+        }
+        request({
+          url: 'http://api01.idataapi.cn:8000/hotel/idataapi?apikey=HGA7pLQIyWdFPp7he0LQjGQXHwqCHsOFNqtWrSir5M9jcpWs6sVEExn4ytvKpRwF',
+          data: data
+        }).then(res => {
+          this.hotelList = res.data
+          this.pageToken = res.pageToken
+          this.$apply()
+        }, () => {
+          wepy.showToast({
+            title: '请求异常',
+            icon: 'none'
+          })
+        })
+      }
+    }
+    onLoad () {
+      this.methods.queryHotel.call(this)
+    }
+  }
+</script>
+
+<style scoped lang="less">
+.query-hotel {
+  padding: 20rpx;
+  font-size: 28rpx;
+}
+</style>
